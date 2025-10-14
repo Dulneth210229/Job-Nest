@@ -40,3 +40,10 @@ userSchema.pre("save", async function nextHook(next) {
 
   next();
 });
+
+userSchema.methods.comparePassword = async function (userPassword) {
+  return await bcrypt.compare(userPassword, this.password); //Return bool value based on the condition
+};
+
+const User = mongoose.model("User", userSchema);
+export default User;

@@ -1,0 +1,43 @@
+import mongoose from "mongoose";
+
+const jobPostSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+    salaryRange: {
+      min: Number,
+      max: Number,
+      currency: String,
+    },
+    status: {
+      type: String,
+      enum: ["draft", "pending_payment", "published", "failed_payment"],
+      default: "draft",
+    },
+    organization: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Organization",
+      required: true,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    payment: { type: mongoose.Schema.Types.ObjectId, ref: "Payment" },
+  },
+  { timestamps: true }
+);
+
+const JobPost = mongoose.model("JobPost", jobPostSchema);
+export default JobPost;
