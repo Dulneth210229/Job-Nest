@@ -18,6 +18,18 @@ const profileController = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
+
+  updateProfile: async (req, res) => {
+    const updates = { profile: req.body.profile };
+    const user = await User.findByIdAndUpdate(req.user.id, updates, {
+      new: true,
+    }).populate("organization");
+
+    res.status(200).json({
+      message: "User updates successfully",
+      data: user,
+    });
+  },
 };
 
 export default profileController;
