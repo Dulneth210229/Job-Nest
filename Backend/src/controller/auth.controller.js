@@ -38,14 +38,48 @@ const authController = {
         },
       });
     } catch (e) {
-      console.info("Error Register user");
+      console.info("Error Register user", e);
       res.status(500).json({ message: "Internal server error" });
     }
   },
 
   Login: async (req, res) => {
     try {
-    } catch (e) {}
+      const { email, password } = req.body;
+      //!Validation
+      if (!email || !password) {
+        return res.status(400).json({ message: "All field must be required" });
+      }
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: `No user exist with the email : ${email}` });
+      }
+
+      //!Check whether the password is correct
+      const isPasswordCorrect = await user.comparePassword(password);
+
+      if (!isPasswordCorrect) {
+        return res.status(400).json({ message: "Password is incorrect" });
+      }
+
+      //*Generate the token
+      const token = signToken(user);
+
+      res.status(200).json({
+        token,
+        user: {
+          id: user._id,
+          email: user.email,
+          role: user.role,
+        },
+      });
+    } catch (e) {
+      console.info("Error Register user", e);
+      res.status(500).json({ message: "Internal server error" });
+    }
   },
 };
 
