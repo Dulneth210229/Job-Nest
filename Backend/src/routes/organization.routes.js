@@ -17,5 +17,11 @@ organizationRouter.put(
   permit("JOB_POSTER", "ADMIN"),
   organizationController.updateOrganization
 );
+organizationRouter.get(
+  "/api/v1/organization/getMyOrganization",
+  auth,
+  permit("JOB_POSTER", "ADMIN"),
+  organizationController.myOrganization
+);
 
 export default organizationRouter;

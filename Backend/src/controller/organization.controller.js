@@ -43,6 +43,21 @@ const organizationController = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
+  myOrganization: async (req, res) => {
+    try {
+      const org = await Organization.findOne({ owner: req.user.id });
+
+      if (!org) {
+        return res.status(400).json({
+          message: `No organization found for the user ${req.user.name}`,
+        });
+      }
+
+      res.status(200).json({ data: org });
+    } catch (e) {
+      res.status(500).json({ message: "Internal server error" }, e);
+    }
+  },
 };
 
 export default organizationController;
