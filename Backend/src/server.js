@@ -4,12 +4,14 @@ import { connectDB } from "./lib/db.js";
 //*Importing all the routes
 import authRouter from "./routes/auth.routes.js";
 import profileRout from "./routes/profile.routes.js";
+import organizationRouter from "./routes/organization.routes.js";
 const app = express();
 const PORT = process.env.PORT || 4000;
 app.use(express.json());
 
 app.use("/", authRouter);
 app.use("/", profileRout);
+app.use("/", organizationRouter);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
