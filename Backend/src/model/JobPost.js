@@ -14,6 +14,14 @@ const jobPostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    category: {
+      type: String,
+      required: true,
+    },
+    appliedCount: {
+      type: String,
+    },
+
     salaryRange: {
       min: Number,
       max: Number,
