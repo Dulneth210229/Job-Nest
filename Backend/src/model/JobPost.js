@@ -19,7 +19,7 @@ const jobPostSchema = new mongoose.Schema(
       required: true,
     },
     appliedCount: {
-      type: String,
+      type: Number,
     },
 
     salaryRange: {
@@ -35,7 +35,6 @@ const jobPostSchema = new mongoose.Schema(
     organization: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Organization",
-      required: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

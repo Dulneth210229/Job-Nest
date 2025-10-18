@@ -1,12 +1,18 @@
 import JobPost from "../model/JobPost.js";
 import Payment from "../model/Payment.js";
+import Organization from "../model/Organization.js";
 import { stripe } from "../../config/stripe.js";
 
 const jobController = {
   createJobAndPay: async (req, res) => {
     try {
       const userId = req.user.id;
+      const org = await Organization.find({ owner: userId });
+      let orgId = null;
 
+      if (org) {
+        orgId = org._id;
+      }
       const job = await JobPost.create({
         title: req.body.title,
         description: req.body.description,
@@ -14,7 +20,7 @@ const jobController = {
         category: req.body.category,
         salaryRange: req.body.salaryRange,
         status: "pending_payment",
-        organization: org._id,
+        organization: orgId,
         createdBy: userId,
       });
 
@@ -81,7 +87,20 @@ const jobController = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
-  getSingleJob: async (req, res) => {},
+  getSingleJob: async (req, res) => {
+    try {
+      const job = await JobPost.findById({ _id: req.params.id });
+
+      if (!job) {
+        return res.status(404).json({ message: "Selected job not found" });
+      }
+
+      res.status(200).json({ data: job });
+    } catch (e) {
+      console.log("Cannot find jobs", e);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
   updateJob: async (req, res) => {
     try {
       const job = await JobPost.findOne({
