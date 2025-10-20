@@ -12,6 +12,7 @@ import profileRouter from "./routes/profile.routes.js";
 import organizationRouter from "./routes/organization.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
 import jobRouter from "./routes/job.routes.js";
+import applicationRouter from "./routes/application.routes.js";
 const app = express();
 
 app.use(helmet());
@@ -36,6 +37,7 @@ app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", organizationRouter);
 app.use("/", jobRouter);
+app.use("/", applicationRouter);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);

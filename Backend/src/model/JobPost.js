@@ -20,6 +20,7 @@ const jobPostSchema = new mongoose.Schema(
     },
     appliedCount: {
       type: Number,
+      default: 0,
     },
 
     salaryRange: {
