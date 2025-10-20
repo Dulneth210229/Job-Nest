@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { auth } from "../../middleware/auth.js";
+import { auth } from "../middleware/auth.js";
 import applicationController from "../controller/application.controller.js";
-import { uploadResume } from "../../middleware/upload.js";
-import { permit } from "../../middleware/roles.js";
+import { uploadResume } from "../middleware/upload.js";
+import { permit } from "../middleware/roles.js";
 
 const applicationRouter = Router();
 
@@ -19,6 +19,13 @@ applicationRouter.get(
   auth,
   permit("JOB_POSTER", "ADMIN"),
   applicationController.listApplicantsForJob
+);
+
+applicationRouter.get(
+  "/api/v1/job/apply/myApplication",
+  auth,
+  permit("JOB_SEEKER"),
+  applicationController.myApplications
 );
 
 export default applicationRouter;

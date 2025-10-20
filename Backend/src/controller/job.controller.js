@@ -1,7 +1,7 @@
 import JobPost from "../model/JobPost.js";
 import Payment from "../model/Payment.js";
 import Organization from "../model/Organization.js";
-import { stripe } from "../../config/stripe.js";
+import { stripe } from "../config/stripe.js";
 
 const jobController = {
   createJobAndPay: async (req, res) => {

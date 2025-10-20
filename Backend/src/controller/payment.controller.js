@@ -1,4 +1,4 @@
-import { stripe } from "../../config/stripe.js";
+import { stripe } from "../config/stripe.js";
 import JobPost from "../model/JobPost.js";
 import Payment from "../model/Payment.js";
 

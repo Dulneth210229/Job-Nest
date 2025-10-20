@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { auth } from "../../middleware/auth.js";
-import { permit } from "../../middleware/roles.js";
+import { auth } from "../middleware/auth.js";
+import { permit } from "../middleware/roles.js";
 import jobController from "../controller/job.controller.js";
 
 const jobRouter = Router();
