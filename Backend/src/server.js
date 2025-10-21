@@ -16,6 +16,7 @@ import paymentRoutes from "./routes/payment.routes.js";
 import jobRouter from "./routes/job.routes.js";
 import applicationRouter from "./routes/application.routes.js";
 import chatRouter from "./routes/chat.routes.js";
+import badgeRouter from "./routes/badge.routes.js";
 
 //* Realtime
 import http from "http";
@@ -55,6 +56,7 @@ app.use("/", organizationRouter);
 app.use("/", jobRouter);
 app.use("/", applicationRouter);
 app.use("/", chatRouter);
+app.use("/", badgeRouter);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
