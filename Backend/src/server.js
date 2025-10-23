@@ -30,7 +30,27 @@ const server = http.createServer(app); // <-- http server for socket.io
 initSocket(server);
 
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_URL?.split(",") || "*" }));
+// app.use(cors({ origin: process.env.CLIENT_URL?.split(",") || "*" }));
+const allowedOrigins = process.env.CLIENT_URL?.split(",").map((url) =>
+  url.trim()
+);
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (e.g., mobile apps, Postman)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn("Blocked by CORS:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // if you use cookies/auth headers
+  })
+);
 app.use(morgan("dev"));
 
 const PORT = process.env.PORT || 4000;

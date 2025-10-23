@@ -7,19 +7,23 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  FlatList,
 } from "react-native";
 import { Link } from "expo-router";
-import React from "react";
+
 import { useAuth } from "../../context/AuthContext";
 import { API } from "../../constants/config";
 import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
 
 export default function profile() {
   const { me, logout } = useAuth();
   const role = me?.role;
+  const userId = me?._id;
 
   const [greeting, setGreeting] = useState("");
+  const [badges, setBadges] = useState([]);
 
   useEffect(() => {
     const getGreeting = () => {
@@ -44,101 +48,142 @@ export default function profile() {
     }, 60000);
 
     return () => clearInterval(interval);
-  }, []);
+  });
+
+  useEffect(() => {
+    if (!userId) return; // 🛑 Stop if userId not yet loaded
+    const fetchBadges = async () => {
+      try {
+        const { data } = await axios.get(`${API}/badges/user/${userId}`);
+        setBadges(data.data || []);
+      } catch (error) {
+        console.error("Error fetching badges:", error);
+      }
+    };
+    fetchBadges();
+  }, [userId]);
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
-        <View style={styles.header}>
-          <Image
-            source={require("../../assets/images/profile.jpg")}
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.card}>
+          <View style={styles.header}>
+            <Image
+              source={require("../../assets/images/profile.jpg")}
+              style={{
+                width: width * 0.3,
+                height: width * 0.3,
+                borderRadius: (width * 0.3) / 2, // Makes the image circular
+                alignItems: "center",
+              }}
+              resizeMode="cover"
+            />
+            <Text style={styles.subtitle}>
+              {greeting} {me?.profile?.fullName || me?.email}
+            </Text>
+            <Text style={styles.subtitle}>
+              Member since {me?.createdAt.split("-")[0]}
+            </Text>
+            <Text style={{ marginTop: 5, color: COLORS.black, fontSize: 16 }}>
+              Occupation: {me?.profile?.occupation}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.card}>
+          <View>
+            <Text style={{ fontSize: 18, color: COLORS.textSecondary }}>
+              Contact Information
+            </Text>
+          </View>
+          <View
             style={{
-              width: width * 0.3,
-              height: width * 0.3,
-              borderRadius: (width * 0.3) / 2, // Makes the image circular
-              alignItems: "center",
+              borderBottomColor: "#ccc",
+              borderBottomWidth: 1,
+              marginVertical: 10, // space above and below the line
             }}
-            resizeMode="cover"
           />
-          <Text style={styles.subtitle}>
-            {greeting} {me?.profile?.fullName || me?.email}
-          </Text>
-          <Text style={styles.subtitle}>
-            Member since {me?.createdAt.split("-")[0]}
-          </Text>
-          <Text style={{ marginTop: 5, color: COLORS.black, fontSize: 16 }}>
-            Occupation: {me?.profile?.occupation}
-          </Text>
-        </View>
-      </View>
-      <View style={styles.card}>
-        <View>
-          <Text style={{ fontSize: 18, color: COLORS.textSecondary }}>
-            Contact Information
-          </Text>
-        </View>
-        <View
-          style={{
-            borderBottomColor: "#ccc",
-            borderBottomWidth: 1,
-            marginVertical: 10, // space above and below the line
-          }}
-        />
-        <View style={{ marginTop: "10" }}>
-          <View style={{ flexDirection: "row", marginBottom: "15" }}>
-            <Ionicons
-              name="call-outline"
-              size={20}
-              color={COLORS.primary}
-              style={styles.inputIcon}
-            />
-            <Text style={styles.label}>{me?.profile?.phone}</Text>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <Ionicons
-              name="mail-outline"
-              size={20}
-              color={COLORS.primary}
-              style={styles.inputIcon}
-            />
-            <Text style={styles.label}>{me?.email}</Text>
+          <View style={{ marginTop: "10" }}>
+            <View style={{ flexDirection: "row", marginBottom: "15" }}>
+              <Ionicons
+                name="call-outline"
+                size={20}
+                color={COLORS.primary}
+                style={styles.inputIcon}
+              />
+              <Text style={styles.label}>{me?.profile?.phone}</Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Ionicons
+                name="mail-outline"
+                size={20}
+                color={COLORS.primary}
+                style={styles.inputIcon}
+              />
+              <Text style={styles.label}>{me?.email}</Text>
+            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.card}>
-        <Text
-          style={{
-            fontSize: 18,
-            color: COLORS.textSecondary,
-            marginBottom: 15,
-          }}
-        >
-          Skills
-        </Text>
-        <View
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            flexDirection: "row",
-            gap: 10,
-          }}
-        >
-          {me?.profile?.skills.map((k, index) => {
-            return (
+        <View style={styles.card}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: COLORS.textSecondary,
+              marginBottom: 15,
+            }}
+          >
+            Skills
+          </Text>
+          <View
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              flexDirection: "row",
+              gap: 10,
+            }}
+          >
+            {me?.profile?.skills.map((k, index) => {
+              return (
+                <View
+                  key={index}
+                  style={{
+                    backgroundColor: COLORS.primary,
+                    padding: 7,
+                    borderRadius: 10,
+                  }}
+                >
+                  <Text>{k}</Text>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+        <View style={styles.card}>
+          <FlatList
+            data={badges}
+            keyExtractor={(i) => i._id}
+            renderItem={({ item }) => (
               <View
-                key={index}
                 style={{
-                  backgroundColor: COLORS.primary,
-                  padding: 7,
-                  borderRadius: 10,
+                  padding: 12,
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: "#eee",
+                  marginVertical: 6,
                 }}
               >
-                <Text>{k}</Text>
+                <Text style={{ fontWeight: "700" }}>{item.badge?.title}</Text>
+                <Text>
+                  Level: {item.level} • Source: {item.source}
+                </Text>
+                {item.score ? <Text>Score: {item.score}</Text> : null}
+                {item.endorsementsCount ? (
+                  <Text>Endorsements: {item.endorsementsCount}</Text>
+                ) : null}
               </View>
-            );
-          })}
+            )}
+          />
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
