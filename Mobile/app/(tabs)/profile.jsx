@@ -63,7 +63,10 @@ export default function profile() {
             {greeting} {me?.profile?.fullName || me?.email}
           </Text>
           <Text style={styles.subtitle}>
-            Member since : {me?.createdAt.split("-")[0]}
+            Member since {me?.createdAt.split("-")[0]}
+          </Text>
+          <Text style={{ marginTop: 5, color: COLORS.black, fontSize: 16 }}>
+            Occupation: {me?.profile?.occupation}
           </Text>
         </View>
       </View>
@@ -101,6 +104,40 @@ export default function profile() {
           </View>
         </View>
       </View>
+      <View style={styles.card}>
+        <Text
+          style={{
+            fontSize: 18,
+            color: COLORS.textSecondary,
+            marginBottom: 15,
+          }}
+        >
+          Skills
+        </Text>
+        <View
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "row",
+            gap: 10,
+          }}
+        >
+          {me?.profile?.skills.map((k, index) => {
+            return (
+              <View
+                key={index}
+                style={{
+                  backgroundColor: COLORS.primary,
+                  padding: 7,
+                  borderRadius: 10,
+                }}
+              >
+                <Text>{k}</Text>
+              </View>
+            );
+          })}
+        </View>
+      </View>
     </View>
   );
 }
@@ -118,6 +155,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.cardBackground,
     borderRadius: 16,
     padding: 24,
+    // paddingLeft: 24,
+    // paddingRight: 24,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

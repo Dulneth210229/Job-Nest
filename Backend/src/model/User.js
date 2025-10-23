@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema(
       location: String,
       skills: [String], // for JOB_SEEKER
       avatarUrl: String,
+      occupation: String,
     },
     organization: {
       type: mongoose.Schema.Types.ObjectId,
