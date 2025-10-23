@@ -1,19 +1,19 @@
-import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
+import { useAuth } from "../context/AuthContext";
 
 export default function Index() {
+  const { token, loading } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (!loading) {
+      router.replace(token ? "(tabs)/home" : "(auth)/login");
+    }
+  }, [loading, token]);
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text style={{ color: "red" }}>Hello</Text>
-
-      <Link href="auth/signup">Signup Page</Link>
-      <Link href="auth"> Login Page</Link>
+    <View>
+      <Text>Loading…</Text>
     </View>
   );
 }

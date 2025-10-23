@@ -5,20 +5,31 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React from "react";
 import { useState } from "react";
 import { Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
+  const { login } = useAuth();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async () => {};
+  const handleLogin = async () => {
+    try {
+      await login(email, password);
+      router.replace("(tabs)/home");
+    } catch (e) {
+      Alert.alert("Login failed", e?.response?.data?.message || String(e));
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.logo}>

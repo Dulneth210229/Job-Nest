@@ -7,10 +7,11 @@ import {
   Dimensions,
   Platform,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-
+import { useRouter } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
 
 export default function signup() {
@@ -21,6 +22,9 @@ export default function signup() {
   const [role, setRole] = useState("");
   const [selectedValue, setSelectedValue] = useState("java");
 
+  const handleSignUp = async () => {};
+  const isLoading = false;
+  const router = useRouter();
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -30,8 +34,8 @@ export default function signup() {
         <View style={styles.card}>
           {/* HEADER */}
           <View style={styles.header}>
-            <Text style={styles.title}>Job Nest</Text>
-            <Text style={styles.subtitle}>Share your favorite reads</Text>
+            <Text style={styles.title}>Job Nest 👨‍🌾</Text>
+            <Text style={styles.subtitle}>Create your job nest account</Text>
           </View>
           <View style={styles.formContainer}>
             {/* EMAIL INPUT */}
@@ -60,7 +64,7 @@ export default function signup() {
               <Text style={styles.label}>Select Role</Text>
               <View style={styles.inputContainer}>
                 <Ionicons
-                  name="users"
+                  name="person-outline"
                   size={20}
                   color={COLORS.primary}
                   style={styles.inputIcon}
@@ -71,20 +75,20 @@ export default function signup() {
                   style={styles.input}
                   placeholder="johndoe@gmail.com"
                 >
-                  <Picker.Item label="Select a role" value="" enabled={false} />
                   <Picker.Item
-                    label="Java"
-                    value="java"
+                    label="Select a role"
+                    value=""
+                    enabled={false}
                     style={styles.pickerItem}
                   />
                   <Picker.Item
-                    label="JavaScript"
-                    value="js"
+                    label="Job Seeker"
+                    value="JOB_SEEKER"
                     style={styles.pickerItem}
                   />
                   <Picker.Item
-                    label="Python"
-                    value="python"
+                    label="Job Poster"
+                    value="JOB_POSTER"
                     style={styles.pickerItem}
                   />
                 </Picker>
@@ -159,6 +163,26 @@ export default function signup() {
                   />
                 </TouchableOpacity>
               </View>
+            </View>
+            {/* SIGNUP BUTTON */}
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleSignUp}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.buttonText}>Sign Up</Text>
+              )}
+            </TouchableOpacity>
+
+            {/* FOOTER */}
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>Already have an account?</Text>
+              <TouchableOpacity onPress={() => router.back()}>
+                <Text style={styles.link}>Login</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

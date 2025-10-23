@@ -31,7 +31,7 @@ const authController = {
 
       res.status(200).json({
         message: "User Registration Successful",
-        user: {
+        data: {
           id: user._id,
           email: user.email,
           role: user.role,
@@ -69,12 +69,8 @@ const authController = {
       const token = signToken(user);
 
       res.status(200).json({
-        token,
-        user: {
-          id: user._id,
-          email: user.email,
-          role: user.role,
-        },
+        message: "Logged in",
+        data: { token, user },
       });
     } catch (e) {
       console.info("Error Register user", e);
