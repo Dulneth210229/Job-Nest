@@ -123,7 +123,7 @@ export default function JobCreate() {
               />
               <Text style={s.title}>Create a Job</Text>
             </View>
-            <Link href="/jobs" asChild>
+            <Link href="./jobposterjobs" asChild>
               <TouchableOpacity style={s.myJobsBtn} activeOpacity={0.9}>
                 <Ionicons name="list-outline" size={16} color={COLORS.white} />
                 <Text style={s.myJobsText}>My Jobs</Text>

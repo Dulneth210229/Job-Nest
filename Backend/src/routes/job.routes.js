@@ -20,4 +20,11 @@ jobRouter.put(
   permit("JOB_POSTER", "ADMIN"),
   jobController.updateJob
 );
+
+jobRouter.delete(
+  "/api/v1/job/delete/:id",
+  auth,
+  permit("JOB_POSTER", "ADMIN"),
+  jobController.deleteJob
+);
 export default jobRouter;

@@ -66,7 +66,10 @@ export default function profile() {
     fetchBadges();
   }, [userId]);
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ backgroundColor: COLORS.background }}
+    >
       <View style={styles.container}>
         {/* Profile Header */}
         <View style={styles.card}>

@@ -139,6 +139,64 @@ const jobController = {
     }
   },
   getRecommendedJobs: async (req, res) => {},
+  // DELETE /jobs/:id
+  deleteJob: async (req, res) => {
+    try {
+      const jobId = req.params.id;
+
+      // Load the job and (optionally) its payment
+      const job = await JobPost.findById(jobId).populate("payment");
+      if (!job) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Job not found" });
+      }
+
+      const isOwner = String(job.createdBy) === String(req.user.id);
+      const isAdmin = req.user?.role === "ADMIN";
+      if (!isOwner && !isAdmin) {
+        return res.status(403).json({ success: false, message: "Forbidden" });
+      }
+
+      // Prevent deleting published jobs (unless ADMIN)
+      // if (job.status === "published" && !isAdmin) {
+      //   return res.status(400).json({
+      //     success: false,
+      //     message: "Cannot delete a published job",
+      //   });
+      // }
+
+      // If there is a linked Payment, handle cleanup
+      // - If payment succeeded, block deletion unless ADMIN (so you don’t orphan accounting)
+      // - Otherwise (requires_payment/failed/etc.), delete the payment record
+      // if (job.payment) {
+      //   const payStatus = job.payment.status;
+      //   if (payStatus === "succeeded" && !isAdmin) {
+      //     return res.status(400).json({
+      //       success: false,
+      //       message:
+      //         "This job has a successful payment record. Ask an admin to remove it.",
+      //     });
+      //   }
+      //   await Payment.deleteOne({ _id: job.payment._id });
+      // }
+
+      // (Optional) If you have an Application model and want to cascade delete:
+      // await Application.deleteMany({ job: job._id });
+
+      await JobPost.deleteOne({ _id: job._id });
+
+      return res.status(200).json({
+        success: true,
+        message: "Job deleted successfully",
+      });
+    } catch (e) {
+      console.error("Cannot delete job", e);
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
+  },
 };
 
 export default jobController;

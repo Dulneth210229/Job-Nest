@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, Redirect } from "expo-router";
 import { useAuth } from "../../../context/AuthContext";
 
 export default function Index() {
@@ -17,10 +17,15 @@ export default function Index() {
     } else if (role === "JOB_POSTER") {
       router.replace("profile/jobposterprofile");
     }
-  }, [me]);
+  }, [me, role]);
+
   return (
-    <View>
-      <Text>Loading…</Text>
-    </View>
+    <Redirect
+      href={
+        role === "JOB_SEEKER"
+          ? "/profile/jobseekerprofile"
+          : "/profile/jobposterprofile"
+      }
+    />
   );
 }
