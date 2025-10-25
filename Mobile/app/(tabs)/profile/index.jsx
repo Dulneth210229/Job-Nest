@@ -13,9 +13,9 @@ export default function Index() {
   useEffect(() => {
     if (!role) return; // wait until role is known
     if (role === "JOB_SEEKER") {
-      router.replace("jobs/userjobs");
+      router.replace("profile/jobseekerprofile");
     } else if (role === "JOB_POSTER") {
-      router.replace("jobs/jobposter");
+      router.replace("profile/jobposterprofile");
     }
   }, [me]);
   return (

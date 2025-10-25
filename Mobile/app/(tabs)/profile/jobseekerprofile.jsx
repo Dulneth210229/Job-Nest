@@ -11,12 +11,12 @@ import {
 } from "react-native";
 import { Link } from "expo-router";
 
-import { useAuth } from "../../context/AuthContext";
-import { API } from "../../constants/config";
+import { useAuth } from "../../../context/AuthContext";
+import { API } from "../../../constants/config";
 import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
-import COLORS from "../../constants/colors";
+import COLORS from "../../../constants/colors";
 import { useRouter } from "expo-router"; // 👈 Add this at the top
 
 export default function profile() {
@@ -73,7 +73,7 @@ export default function profile() {
           <View style={styles.header}>
             <View style={styles.avatarWrap}>
               <Image
-                source={require("../../assets/images/profile.jpg")}
+                source={require("../../../assets/images/profile.jpg")}
                 style={styles.avatar}
                 resizeMode="cover"
               />

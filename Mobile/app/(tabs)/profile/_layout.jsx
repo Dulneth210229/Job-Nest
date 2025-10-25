@@ -7,9 +7,8 @@ export default function JobsLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       {/* These names must match your files */}
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="userjobs" />
-      <Stack.Screen name="jobposter" />
-      <Stack.Screen name="apply" />
+      <Stack.Screen name="jobseekerprofile" />
+      <Stack.Screen name="jobposterprofile" />
     </Stack>
   );
 }

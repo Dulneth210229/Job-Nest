@@ -40,8 +40,9 @@ const jobController = {
             quantity: 1,
           },
         ],
-        success_url: `${process.env.CLIENT_URL}/jobs/submit-success?jobId=${job._id}`,
-        cancel_url: `${process.env.CLIENT_URL}/jobs/submit-cancel?jobId=${job._id}`,
+        success_url: `${process.env.PRIMARY_CLIENT_URL}/jobs/submit-success?jobId=${job._id}`,
+        cancel_url: `${process.env.PRIMARY_CLIENT_URL}/jobs/submit-cancel?jobId=${job._id}`,
+
         metadata: { jobId: String(job._id), userId },
       });
 
