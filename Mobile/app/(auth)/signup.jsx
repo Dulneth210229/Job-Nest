@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
+import { useAuth } from "../../context/AuthContext";
 
 export default function signup() {
   const [username, setUsername] = useState("");
@@ -22,7 +23,14 @@ export default function signup() {
   const [role, setRole] = useState("");
   const [selectedValue, setSelectedValue] = useState("java");
 
-  const handleSignUp = async () => {};
+  const handleSignUp = async () => {
+    try {
+      await register(email, password, role);
+      router.replace("/home");
+    } catch (e) {
+      Alert.alert("Register failed", e?.response?.data?.message || String(e));
+    }
+  };
   const isLoading = false;
   const router = useRouter();
   return (

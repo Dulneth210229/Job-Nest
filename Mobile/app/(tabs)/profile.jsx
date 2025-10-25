@@ -17,11 +17,13 @@ import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import COLORS from "../../constants/colors";
+import { useRouter } from "expo-router"; // 👈 Add this at the top
 
 export default function profile() {
   const { me, logout } = useAuth();
   const role = me?.role;
   const userId = me?._id;
+  const router = useRouter();
 
   const [greeting, setGreeting] = useState("");
   const [badges, setBadges] = useState([]);
@@ -142,7 +144,18 @@ export default function profile() {
                 onPress={() =>
                   Alert.alert("Logout", "Are you sure you want to logout?", [
                     { text: "Cancel", style: "cancel" },
-                    { text: "Logout", style: "destructive", onPress: logout },
+                    {
+                      text: "Logout",
+                      style: "destructive",
+                      onPress: async () => {
+                        try {
+                          await logout(); // call your logout function
+                          router.replace("(auth)/login"); // 👈 navigate to login screen after logout
+                        } catch (err) {
+                          console.error("Logout failed:", err);
+                        }
+                      },
+                    },
                   ])
                 }
                 style={[styles.actionBtn, styles.outlineBtn]}
