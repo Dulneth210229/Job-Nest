@@ -14,7 +14,7 @@ function RootLayoutInner() {
           {/* <Stack.Screen name="index" /> */}
           <Stack.Screen name="(auth)" />
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="(jobs)" />
+          <Stack.Screen name="(payment)" />
         </Stack>
       </SafeScreen>
       <StatusBar style="auto" />

@@ -109,7 +109,10 @@ export default function Home() {
             ].map((c) => (
               <Link
                 key={c.key}
-                href={{ pathname: "/category/[name]", params: { name: c.key } }}
+                href={{
+                  pathname: "/jobs",
+                  params: { name: c.key },
+                }}
                 asChild
               >
                 <TouchableOpacity style={styles.catCard} activeOpacity={0.9}>
