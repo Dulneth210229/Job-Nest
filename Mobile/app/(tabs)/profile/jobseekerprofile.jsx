@@ -171,10 +171,11 @@ export default function profile() {
             </View>
 
             {/* NEW: Take Assessment button (full-width, separate row) */}
+
             <TouchableOpacity
               activeOpacity={0.9}
               style={[styles.actionBtn, styles.assessBtn]}
-              onPress={() => router.push("/assessments")}
+              onPress={() => router.push("profile/assess")}
             >
               <Ionicons
                 name="clipboard-outline"
