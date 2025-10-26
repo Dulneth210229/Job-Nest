@@ -169,6 +169,20 @@ export default function profile() {
                 <Text style={styles.outlineBtnText}>Logout</Text>
               </TouchableOpacity>
             </View>
+
+            {/* NEW: Take Assessment button (full-width, separate row) */}
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={[styles.actionBtn, styles.assessBtn]}
+              onPress={() => router.push("/assessments")}
+            >
+              <Ionicons
+                name="clipboard-outline"
+                size={16}
+                color={COLORS.white}
+              />
+              <Text style={styles.assessBtnText}>Take an Assessment</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -410,6 +424,14 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
   },
   outlineBtnText: { color: COLORS.textPrimary, fontWeight: "800" },
+
+  // NEW styles for Take Assessment button
+  assessBtn: {
+    marginTop: 10,
+    backgroundColor: COLORS.primary,
+    borderWidth: 0,
+  },
+  assessBtnText: { color: COLORS.white, fontWeight: "800" },
 
   /* Section header */
   sectionHeader: {
